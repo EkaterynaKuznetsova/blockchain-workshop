@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Blockchain or not? — Agriculture cases</title>
+<style>
+  :root {
+    --surface-0: #f4f3ef;
+    --surface-1: #ffffff;
+    --border: #e2e0d8;
+    --text-primary: #1f1e1c;
+    --text-secondary: #5f5e5a;
+    --text-muted: #888780;
+    --teal-bg: #E1F5EE; --teal-title: #04342C; --teal-sub: #085041;
+    --coral-bg: #FAECE7; --coral-title: #4A1B0C; --coral-sub: #712B13;
+    --amber-bg: #FAEEDA; --amber-title: #412402; --amber-sub: #633806;
+  }
+  * { box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    background: var(--surface-0);
+    color: var(--text-primary);
+    margin: 0;
+    padding: 32px 24px;
+  }
+  .wrap { max-width: 980px; margin: 0 auto; }
+  h1 { font-size: 20px; font-weight: 600; margin: 0 0 4px; }
+  .sub { font-size: 14px; color: var(--text-secondary); margin: 0 0 20px; }
+  .toolbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+  button {
+    font-size: 13px; padding: 8px 14px; border-radius: 8px;
+    border: 1px solid var(--border); background: var(--surface-1);
+    cursor: pointer; color: var(--text-primary);
+  }
+  button:hover { background: #eeeeea; }
+  #grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 14px;
+  }
+  .card-outer { perspective: 1000px; height: 260px; cursor: pointer; }
+  .card-inner {
+    position: relative; width: 100%; height: 100%;
+    transition: transform 0.5s; transform-style: preserve-3d;
+  }
+  .card-inner.flipped { transform: rotateY(180deg); }
+  .face {
+    position: absolute; inset: 0; backface-visibility: hidden;
+    border-radius: 12px; padding: 18px;
+    display: flex; flex-direction: column; justify-content: space-between;
+  }
+  .front {
+    background: var(--surface-1); border: 1px solid var(--border);
+  }
+  .front .case-num { font-size: 12px; color: var(--text-muted); }
+  .front .case-q { font-size: 14px; line-height: 1.5; margin: 0; }
+  .front .hint { font-size: 12px; color: var(--text-secondary); }
+  .back {
+    transform: rotateY(180deg);
+    display: flex; flex-direction: column; justify-content: center;
+    align-items: center; text-align: center; gap: 8px;
+  }
+  .back.yes { background: var(--teal-bg); }
+  .back.no { background: var(--coral-bg); }
+  .back.maybe { background: var(--amber-bg); }
+  .back .verdict { font-size: 17px; font-weight: 600; margin: 0; }
+  .back.yes .verdict { color: var(--teal-title); }
+  .back.no .verdict { color: var(--coral-title); }
+  .back.maybe .verdict { color: var(--amber-title); }
+  .back .why { font-size: 13px; line-height: 1.5; margin: 0; }
+  .back.yes .why { color: var(--teal-sub); }
+  .back.no .why { color: var(--coral-sub); }
+  .back.maybe .why { color: var(--amber-sub); }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Blockchain or not?</h1>
+  <p class="sub">Agriculture scenarios — click a card to flip it and reveal the answer</p>
+  <div class="toolbar">
+    <span class="sub" style="margin:0;">12 cases</span>
+    <button id="reset-btn">Flip all back</button>
+  </div>
+  <div id="grid"></div>
+</div>
+<script>
+const cases = [
+  {q:"A single farm's soil moisture sensors feeding the farmer's own personal dashboard<br><span style='color:#666'>(I sensori di umidità del suolo di una singola azienda agricola inviano dati solo alla dashboard del proprietario)</span>", a:"no", why:"One data owner, no mutual distrust between parties — a regular database is fine"},
+  {q:"Organic grain certification across 200 farmers, 3 grain elevators and 5 buyers who don't trust each other<br><span style='color:#666'>(Certificazione del grano biologico tra 200 agricoltori, 3 silos e 5 acquirenti che non si fidano gli uni degli altri)</span>", a:"yes", why:"Many mutually distrusting parties — a shared, tamper-evident history is needed"},
+  {q:"A national land registry run by a strong, trusted government institution<br><span style='color:#666'>(Registro fondiario nazionale gestito da un'istituzione pubblica affidabile)</span>", a:"maybe", why:"If the institution already works well, blockchain just duplicates an already-solved trust problem"},
+  {q:"Pesticide application records across a farmer cooperative, required for EU export certification<br><span style='color:#666'>(Registri dell'uso dei pesticidi in una cooperativa agricola richiesti per la certificazione di esportazione UE)</span>", a:"yes", why:"Many parties, and an immutable history is critical for external audits"},
+  {q:"A real-time control system for drip irrigation valves<br><span style='color:#666'>(Sistema di controllo in tempo reale delle valvole per l'irrigazione a goccia)</span>", a:"no", why:"Needs low latency and a single operator — blockchain is too slow for this"},
+  {q:"Issuing and trading carbon credits between farmers, verifiers and corporate buyers<br><span style='color:#666'>(Emissione e scambio di crediti di carbonio tra agricoltori, verificatori e aziende acquirenti)</span>", a:"yes", why:"Classic multi-stakeholder case that needs public verifiability"},
+  {q:"A single farm's private bookkeeping and accounting records<br><span style='color:#666'>(Contabilità privata di una singola azienda agricola)</span>", a:"no", why:"One user, one database — blockchain solves no problem here"},
+  {q:"Livestock traceability from birth to shelf across farms, transporters and slaughterhouses<br><span style='color:#666'>(Tracciabilità del bestiame dalla nascita allo scaffale attraverso aziende agricole, trasportatori e macelli)</span>", a:"yes", why:"Many independent parties in the chain need a shared, tamper-evident record"},
+  {q:"A university's internal research database on crop yield trials<br><span style='color:#666'>(Database interno di un'università sulle prove di resa delle colture)</span>", a:"no", why:"One trusted data owner, no untrusting external parties involved"},
+  {q:"Transparent distribution of fair-trade premiums to thousands of smallholder farmers<br><span style='color:#666'>(Distribuzione trasparente dei premi Fair Trade a migliaia di piccoli agricoltori)</span>", a:"yes", why:"Transparency demanded by NGOs and buyers is a strong argument for a shared ledger"},
+  {q:"Ingesting data from a single government weather station<br><span style='color:#666'>(Acquisizione dei dati da un'unica stazione meteorologica governativa)</span>", a:"no", why:"One data source — there's no trust problem between multiple parties to solve"},
+  {q:"A direct farmer-to-consumer marketplace with no central platform<br><span style='color:#666'>(Marketplace diretto agricoltore-consumatore senza piattaforma centrale)</span>", a:"maybe", why:"Decentralization is useful, but an open API could deliver it without blockchain"}
+];
+
+const labels = {
+  yes: {text:"yes, blockchain", cls:"yes"},
+  no: {text:"no, not needed", cls:"no"},
+  maybe: {text:"it depends", cls:"maybe"}
+};
+
+const grid = document.getElementById("grid");
+
+cases.forEach((c, i) => {
+  const outer = document.createElement("div");
+  outer.className = "card-outer";
+
+  const inner = document.createElement("div");
+  inner.className = "card-inner";
+
+  const front = document.createElement("div");
+  front.className = "face front";
+  front.innerHTML = '<span class="case-num">Case ' + (i+1) + '</span><p class="case-q">' + c.q + '</p><span class="hint">click for answer</span>';
+
+  const back = document.createElement("div");
+  const info = labels[c.a];
+  back.className = "face back " + info.cls;
+  back.innerHTML = '<p class="verdict">' + info.text + '</p><p class="why">' + c.why + '</p>';
+
+  inner.appendChild(front);
+  inner.appendChild(back);
+  outer.appendChild(inner);
+
+  outer.addEventListener("click", () => {
+    inner.classList.toggle("flipped");
+  });
+
+  grid.appendChild(outer);
+});
+
+document.getElementById("reset-btn").addEventListener("click", () => {
+  grid.querySelectorAll(".card-inner.flipped").forEach(el => el.classList.remove("flipped"));
+});
+</script>
+</body>
+</html>

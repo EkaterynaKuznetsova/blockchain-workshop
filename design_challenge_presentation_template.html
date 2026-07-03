@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Design Challenge — presentation template</title>
+<style>
+  :root {
+    --bg: #f7f5ef;
+    --paper: #fffefb;
+    --ink: #2a2b24;
+    --muted: #6e7267;
+    --accent: #3f6b4f;
+    --accent-light: #e7eee4;
+    --border: #cbd0c3;
+    --soft: #f0eee6;
+    accent-color: #3f6b4f;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
+    line-height: 1.5;
+  }
+  .page {
+    max-width: 980px;
+    margin: 0 auto;
+    padding: 40px 28px 80px;
+    position: relative;
+  }
+  .page::before {
+    content: "";
+    position: absolute;
+    top: 0; bottom: 0; left: 54px;
+    width: 1px;
+    background: var(--border);
+  }
+  header {
+    margin-bottom: 32px;
+    padding-left: 40px;
+  }
+  .eyebrow {
+    font-size: 12px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--accent);
+    font-weight: 600;
+    margin: 0 0 6px;
+  }
+  h1 {
+    font-family: Georgia, "Iowan Old Style", serif;
+    font-size: 30px;
+    font-weight: 400;
+    margin: 0 0 12px;
+    color: var(--ink);
+  }
+  .intro {
+    max-width: 760px;
+    color: var(--muted);
+    font-size: 15px;
+    margin: 0;
+  }
+  .meta-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin-top: 20px;
+    max-width: 760px;
+  }
+  .meta-field label {
+    display: block;
+    font-size: 12px;
+    color: var(--muted);
+    margin-bottom: 4px;
+  }
+  .meta-field input {
+    width: 100%;
+    padding: 9px 10px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    font-size: 14px;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: inherit;
+  }
+  section {
+    position: relative;
+    padding-left: 40px;
+    margin-bottom: 30px;
+  }
+  .num {
+    position: absolute;
+    left: 34px;
+    top: 2px;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--paper);
+    border: 1.5px solid var(--accent);
+    color: var(--accent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: Georgia, serif;
+    font-size: 17px;
+    transform: translateX(-50%);
+  }
+  .card {
+    background: var(--paper);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px 22px 22px;
+  }
+  .card h2 {
+    font-family: Georgia, "Iowan Old Style", serif;
+    font-weight: 400;
+    font-size: 19px;
+    margin: 0 0 4px;
+  }
+  .q {
+    font-size: 13px;
+    color: var(--muted);
+    margin: 0 0 14px;
+  }
+  .slide-box {
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: #fbfaf5;
+    padding: 18px;
+    margin-top: 14px;
+  }
+  .slide-title {
+    font-family: Georgia, "Iowan Old Style", serif;
+    font-size: 18px;
+    font-weight: 400;
+    margin: 0 0 12px;
+    color: var(--accent);
+  }
+  .grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+  }
+  .field label, .mini label {
+    display: block;
+    font-size: 12px;
+    color: var(--muted);
+    margin-bottom: 5px;
+  }
+  input[type="text"], textarea {
+    width: 100%;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 9px 10px;
+    font-family: inherit;
+    font-size: 14px;
+    color: var(--ink);
+    background: var(--paper);
+  }
+  textarea {
+    resize: vertical;
+    min-height: 58px;
+  }
+  textarea:focus, input:focus {
+    outline: none;
+    border-color: var(--accent);
+  }
+  .options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px 20px;
+    margin: 6px 0 12px;
+  }
+  .opt {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    cursor: pointer;
+  }
+  .opt input { width: 16px; height: 16px; cursor: pointer; }
+  .columns {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin-top: 10px;
+  }
+  .mini {
+    background: var(--soft);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px;
+  }
+  .hint-box {
+    background: var(--accent-light);
+    border-radius: 8px;
+    padding: 12px 14px;
+    color: var(--muted);
+    font-size: 13px;
+    margin-top: 14px;
+  }
+  .hint-box strong { color: var(--ink); font-weight: 500; }
+  .talking {
+    margin-top: 12px;
+    border-top: 1px solid var(--border);
+    padding-top: 12px;
+  }
+  .talking h3 {
+    margin: 0 0 8px;
+    font-size: 13px;
+    color: var(--muted);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+  ul {
+    margin: 8px 0 0 19px;
+    padding: 0;
+    color: var(--muted);
+    font-size: 14px;
+  }
+  footer {
+    padding-left: 40px;
+    margin-top: 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .print-btn {
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 10px 18px;
+    font-size: 14px;
+    cursor: pointer;
+    font-family: inherit;
+  }
+  .print-btn:hover { background: #345a41; }
+  .hint { font-size: 12px; color: var(--muted); }
+  @media print {
+    body { background: #fff; }
+    .print-btn { display: none; }
+    section { break-inside: avoid; }
+    .page::before { background: #ddd; }
+  }
+  @media (max-width: 720px) {
+    .grid-2, .columns, .meta-row { grid-template-columns: 1fr; }
+    .page::before { left: 34px; }
+    header, section, footer { padding-left: 26px; }
+    .num { left: 20px; width: 32px; height: 32px; font-size: 14px; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+<header>
+  <p class="eyebrow">Design challenge</p>
+  <h1>3-minute presentation template</h1>
+  <p class="intro">
+    Use this page to prepare your short consulting presentation. You do not need to fill in every field.
+    Focus on clear reasoning and a practical recommendation.
+  </p>
+  <div class="meta-row">
+    <div class="meta-field">
+      <label>Case / topic</label>
+      <input type="text" placeholder="e.g. Organic wheat traceability">
+    </div>
+    <div class="meta-field">
+      <label>Team / group</label>
+      <input type="text" placeholder="Group number or names">
+    </div>
+  </div>
+</header>
+
+<section>
+  <div class="num">1</div>
+  <div class="card">
+    <h2>Slide 1 — The problem</h2>
+    <p class="q">Explain the case and why this is a trust or coordination problem.</p>
+
+    <div class="slide-box">
+      <p class="slide-title">The problem</p>
+      <div class="grid-2">
+        <div class="field">
+          <label>What is the problem?</label>
+          <textarea placeholder="Describe the practical problem in 1–2 sentences."></textarea>
+        </div>
+        <div class="field">
+          <label>Who are the stakeholders?</label>
+          <textarea placeholder="Farmers, transport company, laboratory, retailer, certification body..."></textarea>
+        </div>
+      </div>
+      <div class="field" style="margin-top:12px;">
+        <label>Where is the trust issue?</label>
+        <textarea placeholder="Who does not fully trust whom? Why does this matter?"></textarea>
+      </div>
+    </div>
+
+    <div class="talking">
+      <h3>What to say</h3>
+      <ul>
+        <li>Start with the real-world problem, not with blockchain.</li>
+        <li>Mention the organizations involved.</li>
+        <li>Explain why a shared and reliable history may be needed.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="num">2</div>
+  <div class="card">
+    <h2>Slide 2 — Our analysis</h2>
+    <p class="q">Decide whether blockchain is useful and what information should go where.</p>
+
+    <div class="slide-box">
+      <p class="slide-title">Our analysis</p>
+      <label class="q" style="display:block;margin-bottom:6px;">Should blockchain be used?</label>
+      <div class="options">
+        <label class="opt"><input type="radio" name="decision"> Yes</label>
+        <label class="opt"><input type="radio" name="decision"> No</label>
+        <label class="opt"><input type="radio" name="decision"> Not sure</label>
+      </div>
+
+      <div class="field">
+        <label>Why?</label>
+        <textarea placeholder="Use the decision framework: multiple organizations, trust, immutable history, trusted authority..."></textarea>
+      </div>
+
+      <div class="columns">
+        <div class="mini">
+          <label>On-chain: what should be recorded on the blockchain?</label>
+          <textarea placeholder="e.g. shipment status, certificate hash, ownership transfer, audit record"></textarea>
+        </div>
+        <div class="mini">
+          <label>Off-chain: what should stay in a database or private storage?</label>
+          <textarea placeholder="e.g. photos, personal data, raw sensor data, large files"></textarea>
+        </div>
+      </div>
+    </div>
+
+    <div class="talking">
+      <h3>What to say</h3>
+      <ul>
+        <li>Do not say “blockchain is good” in general — explain why it fits or does not fit this case.</li>
+        <li>Remember: not all data should be stored on-chain.</li>
+        <li>If a normal database is better, that is a valid recommendation.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="num">3</div>
+  <div class="card">
+    <h2>Slide 3 — Final recommendation</h2>
+    <p class="q">Give a clear recommendation to the client.</p>
+
+    <div class="slide-box">
+      <p class="slide-title">Final recommendation</p>
+      <div class="columns">
+        <div class="mini">
+          <label>Main benefits</label>
+          <textarea placeholder="Traceability, transparency, faster audits, less fraud, better coordination..."></textarea>
+        </div>
+        <div class="mini">
+          <label>Main challenges</label>
+          <textarea placeholder="Cost, complexity, privacy, data quality, adoption, internet access..."></textarea>
+        </div>
+      </div>
+      <div class="field" style="margin-top:12px;">
+        <label>Final decision in one sentence</label>
+        <textarea placeholder="We recommend / do not recommend blockchain because..."></textarea>
+      </div>
+    </div>
+
+    <div class="hint-box">
+      <strong>Tip:</strong> Your final answer can be “No”. A good consultant does not always recommend blockchain.
+      The goal is to make a practical and well-reasoned decision.
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="num">✓</div>
+  <div class="card">
+    <h2>Presentation checklist</h2>
+    <p class="q">Before presenting, check that your team can answer these questions.</p>
+    <div class="options">
+      <label class="opt"><input type="checkbox"> We described the real problem clearly.</label>
+      <label class="opt"><input type="checkbox"> We identified the stakeholders.</label>
+      <label class="opt"><input type="checkbox"> We explained the trust issue.</label>
+      <label class="opt"><input type="checkbox"> We decided whether blockchain is useful.</label>
+      <label class="opt"><input type="checkbox"> We separated blockchain data from database data.</label>
+      <label class="opt"><input type="checkbox"> We included benefits and challenges.</label>
+      <label class="opt"><input type="checkbox"> We have a final recommendation.</label>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <span class="hint">Use this as a guide for a maximum 3-slide / 3-minute presentation.</span>
+  <button class="print-btn" onclick="window.print()">Print / save as PDF</button>
+</footer>
+
+</div>
+</body>
+</html>
