@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Design Challenge — worksheet</title>
+<style>
+  :root {
+    --bg: #f7f5ef;
+    --paper: #fffefb;
+    --ink: #2a2b24;
+    --muted: #6e7267;
+    --accent: #3f6b4f;
+    --accent-light: #e7eee4;
+    --border: #cbd0c3;
+    accent-color: #3f6b4f;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
+    line-height: 1.5;
+  }
+  .page {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 40px 28px 80px;
+    position: relative;
+  }
+  .page::before {
+    content: "";
+    position: absolute;
+    top: 0; bottom: 0; left: 54px;
+    width: 1px;
+    background: var(--border);
+  }
+  header {
+    margin-bottom: 32px;
+    padding-left: 40px;
+  }
+  .eyebrow {
+    font-size: 12px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--accent);
+    font-weight: 600;
+    margin: 0 0 6px;
+  }
+  h1 {
+    font-family: Georgia, "Iowan Old Style", serif;
+    font-size: 28px;
+    font-weight: 400;
+    margin: 0 0 18px;
+    color: var(--ink);
+  }
+  .meta-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin-top: 18px;
+  }
+  .meta-field label {
+    display: block;
+    font-size: 12px;
+    color: var(--muted);
+    margin-bottom: 4px;
+  }
+  .meta-field input {
+    width: 100%;
+    padding: 9px 10px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    font-size: 14px;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: inherit;
+  }
+  section {
+    position: relative;
+    padding-left: 40px;
+    margin-bottom: 30px;
+  }
+  .num {
+    position: absolute;
+    left: 34px;
+    top: 2px;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--paper);
+    border: 1.5px solid var(--accent);
+    color: var(--accent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: Georgia, serif;
+    font-size: 17px;
+    transform: translateX(-50%);
+  }
+  .card {
+    background: var(--paper);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px 22px 22px;
+  }
+  .card h2 {
+    font-family: Georgia, "Iowan Old Style", serif;
+    font-weight: 400;
+    font-size: 18px;
+    margin: 0 0 3px;
+  }
+  .card .q {
+    font-size: 13px;
+    color: var(--muted);
+    margin: 0 0 14px;
+  }
+  .options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px 22px;
+  }
+  .opt {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    cursor: pointer;
+  }
+  .opt input { width: 16px; height: 16px; cursor: pointer; }
+  .other-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+  }
+  .other-row input[type="text"] {
+    flex: 1;
+    max-width: 260px;
+    border: none;
+    border-bottom: 1px solid var(--border);
+    background: transparent;
+    padding: 3px 2px;
+    font-size: 14px;
+    font-family: inherit;
+    color: var(--ink);
+  }
+  .other-row input[type="text"]:focus { outline: none; border-bottom-color: var(--accent); }
+  textarea {
+    width: 100%;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 10px 12px;
+    font-family: inherit;
+    font-size: 14px;
+    color: var(--ink);
+    background: var(--paper);
+    resize: vertical;
+    min-height: 60px;
+  }
+  textarea:focus { outline: none; border-color: var(--accent); }
+  .example {
+    background: var(--accent-light);
+    border-radius: 6px;
+    padding: 10px 12px;
+    font-size: 13px;
+    color: var(--muted);
+    margin-bottom: 12px;
+  }
+  .example strong { color: var(--ink); font-weight: 500; }
+  .trust-rows { display: flex; flex-direction: column; gap: 8px; margin-bottom: 12px; }
+  .trust-row { display: flex; align-items: center; gap: 8px; }
+  .trust-row input {
+    border: none;
+    border-bottom: 1px solid var(--border);
+    background: transparent;
+    padding: 4px 2px;
+    font-size: 14px;
+    font-family: inherit;
+    color: var(--ink);
+    flex: 1;
+  }
+  .trust-row input:focus { outline: none; border-bottom-color: var(--accent); }
+  .trust-row span { color: var(--muted); font-size: 15px; }
+  table { width: 100%; border-collapse: collapse; margin-top: 4px; }
+  th, td { text-align: left; padding: 9px 8px; font-size: 14px; border-bottom: 1px solid var(--border); }
+  th { font-size: 12px; color: var(--muted); font-weight: 500; text-transform: uppercase; letter-spacing: 0.03em; }
+  th.center, td.center { text-align: center; }
+  td.center input { width: 17px; height: 17px; cursor: pointer; }
+  .why-label { font-size: 13px; color: var(--muted); margin: 14px 0 6px; }
+  .rec-question { font-size: 13px; color: var(--muted); margin-top: 12px; }
+  footer {
+    padding-left: 40px;
+    margin-top: 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .print-btn {
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 10px 18px;
+    font-size: 14px;
+    cursor: pointer;
+    font-family: inherit;
+  }
+  .print-btn:hover { background: #345a41; }
+  .hint { font-size: 12px; color: var(--muted); }
+  @media print {
+    body { background: #fff; }
+    .print-btn { display: none; }
+    section { break-inside: avoid; }
+    .page::before { background: #ddd; }
+  }
+  @media (max-width: 560px) {
+    .meta-row { grid-template-columns: 1fr; }
+    .page::before { left: 34px; }
+    header, section, footer { padding-left: 26px; }
+    .num { left: 20px; width: 32px; height: 32px; font-size: 14px; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+<header>
+  <p class="eyebrow">Design challenge</p>
+  <h1>Blockchain system worksheet</h1>
+  <div class="meta-row">
+    <div class="meta-field">
+      <label>Case / topic</label>
+      <input type="text" placeholder="e.g. Organic wheat traceability">
+    </div>
+    <div class="meta-field">
+      <label>Team members</label>
+      <input type="text" placeholder="Names">
+    </div>
+  </div>
+</header>
+
+<section>
+  <div class="num">1</div>
+  <div class="card">
+    <h2>Stakeholders</h2>
+    <p class="q">Who are the participants?</p>
+    <div class="options">
+      <label class="opt"><input type="checkbox"> Farmers</label>
+      <label class="opt"><input type="checkbox"> Transport company</label>
+      <label class="opt"><input type="checkbox"> Laboratory</label>
+      <label class="opt"><input type="checkbox"> Certification body</label>
+      <label class="opt"><input type="checkbox"> Retailer</label>
+      <label class="opt"><input type="checkbox"> Government</label>
+    </div>
+    <div class="other-row" style="margin-top:10px;">
+      <label class="opt"><input type="checkbox"> Other</label>
+      <input type="text" placeholder="specify">
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="num">2</div>
+  <div class="card">
+    <h2>Trust</h2>
+    <p class="q">Who does not fully trust whom?</p>
+    <div class="example">Example: <strong>Farmer ↔ Laboratory</strong>, <strong>Transport ↔ Retailer</strong>, <strong>Government ↔ Producer</strong></div>
+    <div class="trust-rows">
+      <div class="trust-row"><input type="text" placeholder="Party A"><span>↔</span><input type="text" placeholder="Party B"></div>
+      <div class="trust-row"><input type="text" placeholder="Party A"><span>↔</span><input type="text" placeholder="Party B"></div>
+      <div class="trust-row"><input type="text" placeholder="Party A"><span>↔</span><input type="text" placeholder="Party B"></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="num">3</div>
+  <div class="card">
+    <h2>Should blockchain be used?</h2>
+    <div class="options">
+      <label class="opt"><input type="radio" name="q3"> Yes</label>
+      <label class="opt"><input type="radio" name="q3"> No</label>
+      <label class="opt"><input type="radio" name="q3"> Not sure</label>
+    </div>
+    <p class="why-label">Why?</p>
+    <textarea rows="3"></textarea>
+  </div>
+</section>
+
+<section>
+  <div class="num">4</div>
+  <div class="card">
+    <h2>What should be stored on the blockchain?</h2>
+    <p class="q">Choose one column per row</p>
+    <table>
+      <tr><th>Information</th><th class="center">Blockchain</th><th class="center">Database</th></tr>
+      <tr><td>Shipment status</td><td class="center"><input type="radio" name="r1"></td><td class="center"><input type="radio" name="r1"></td></tr>
+      <tr><td>Certificate</td><td class="center"><input type="radio" name="r2"></td><td class="center"><input type="radio" name="r2"></td></tr>
+      <tr><td>Photos</td><td class="center"><input type="radio" name="r3"></td><td class="center"><input type="radio" name="r3"></td></tr>
+      <tr><td>Sensor data</td><td class="center"><input type="radio" name="r4"></td><td class="center"><input type="radio" name="r4"></td></tr>
+      <tr><td>Personal information</td><td class="center"><input type="radio" name="r5"></td><td class="center"><input type="radio" name="r5"></td></tr>
+    </table>
+  </div>
+</section>
+
+<section>
+  <div class="num">5</div>
+  <div class="card">
+    <h2>What could go wrong?</h2>
+    <div class="options">
+      <label class="opt"><input type="checkbox"> Wrong sensor measurements</label>
+      <label class="opt"><input type="checkbox"> Human error</label>
+      <label class="opt"><input type="checkbox"> Missing internet</label>
+      <label class="opt"><input type="checkbox"> Someone enters false information</label>
+      <label class="opt"><input type="checkbox"> High implementation cost</label>
+    </div>
+    <div class="other-row" style="margin-top:10px;">
+      <label class="opt"><input type="checkbox"> Other</label>
+      <input type="text" placeholder="specify">
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="num">6</div>
+  <div class="card">
+    <h2>Final recommendation</h2>
+    <p class="q">One sentence.</p>
+    <textarea rows="2"></textarea>
+    <p class="rec-question">Would you recommend blockchain for this case?</p>
+  </div>
+</section>
+
+<section>
+  <div class="num">7</div>
+  <div class="card">
+    <h2>Benefits for the system</h2>
+    <div class="options">
+      <label class="opt"><input type="checkbox"> Better traceability</label>
+      <label class="opt"><input type="checkbox"> Transparency</label>
+      <label class="opt"><input type="checkbox"> Faster audits</label>
+      <label class="opt"><input type="checkbox"> Better trust</label>
+      <label class="opt"><input type="checkbox"> Less fraud</label>
+    </div>
+    <div class="other-row" style="margin-top:10px;">
+      <label class="opt"><input type="checkbox"> Other</label>
+      <input type="text" placeholder="specify">
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="num">8</div>
+  <div class="card">
+    <h2>Challenges for the system</h2>
+    <div class="options">
+      <label class="opt"><input type="checkbox"> Cost</label>
+      <label class="opt"><input type="checkbox"> Complexity</label>
+      <label class="opt"><input type="checkbox"> Data quality</label>
+      <label class="opt"><input type="checkbox"> Adoption</label>
+      <label class="opt"><input type="checkbox"> Privacy</label>
+    </div>
+    <div class="other-row" style="margin-top:10px;">
+      <label class="opt"><input type="checkbox"> Other</label>
+      <input type="text" placeholder="specify">
+    </div>
+  </div>
+</section>
+
+<footer>
+  <span class="hint">Fill in on screen, then use this as the basis for your 3–4 slide presentation</span>
+  <button class="print-btn" onclick="window.print()">Print / save as PDF</button>
+</footer>
+
+</div>
+</body>
+</html>
